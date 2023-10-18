@@ -43,6 +43,11 @@ def upload_images():
     for file in os.listdir('uploads/'):
         zipf.write('uploads/'+file)
     zipf.close()
+
+    # Remove all files in uploads folder
+    for file in os.listdir('uploads/'):
+        os.remove('uploads/'+file)
+
     return send_file('greys.zip',
         mimetype = 'zip',
         as_attachment = True)
