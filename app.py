@@ -34,6 +34,7 @@ def upload_images():
 
         for file in os.listdir('uploads'):
             image = cv2.imread(os.path.join('uploads', file))
+            # Insert your function instead of cv2.cvtColor
             gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             filename = os.path.join(app.config['UPLOAD_FOLDER'], file)
             cv2.imwrite(os.path.join('uploads', file), gray_image)

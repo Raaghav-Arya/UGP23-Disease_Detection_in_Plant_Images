@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import JSZip from 'jszip'
+import { Button } from '@mui/material';
 
 axios.defaults.baseURL = 'http://127.0.0.1:5000';
 
@@ -40,7 +41,7 @@ const ImageUpload = () => {
   return (
     <div>
       <input type='file' multiple onChange={onDrop} accept='image/*' />
-      <button onClick={uploadImages}>Upload Images</button>
+      <Button >Upload Images</Button>
       {images && images.map(image => <img key={image} src={'data:image/jpeg;base64,'+image} />)}
     </div>
   );
