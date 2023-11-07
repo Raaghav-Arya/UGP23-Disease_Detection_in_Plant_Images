@@ -25,9 +25,16 @@
 
 }
  .App-header nav .brand {
-  align-items: center;
+  align-items: left;
   width: 200px;
   display: block;
+}
+
+.home-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
 }
 
 .App-link {
