@@ -1,16 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCa } from 'react';
 import axios from 'axios';
 import JSZip from 'jszip'
 import { Button } from 'antd';
-import UploadButton from './UploadButton';
 import { UploadOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { useMyContext } from './MyContext';
 
 axios.defaults.baseURL = 'http://127.0.0.1:5000';
 
 const ImageUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const { result, setResult } = useMyContext();
   const [images, setImages] = useState(null);
+  
   const fileInputRef = useRef(null);
+  const navigate = useNavigate()
 
   const onDrop = (event) => {
     setSelectedFiles([...event.target.files]);
@@ -36,7 +40,8 @@ const ImageUpload = () => {
         await zip.files[filename].async('base64')
       ))
       setImages(files)
-      console.log(files)
+      navigate('/result')
+      setResult(files)
     } catch (error) {
       console.error('Error uploading images:', error);
     }
@@ -47,8 +52,12 @@ const ImageUpload = () => {
     setSelectedFiles(imagesArray);
   };
 
-  return (
-    <div>
+  return (    
+    <div className="App">
+      <div className="home-text" >
+      <h1>Upload images to get started!</h1>
+      <p>Our Machine Learning Platform will analyze your images and provide you with a detailed report of your crop's health.</p>
+      </div>
       <Button onClick={() => fileInputRef.current.click()} icon={<UploadOutlined />}>Click to Upload</Button>
       <input ref={fileInputRef} style={{ display: 'none' }} type='file' multiple onChange={onDrop} accept='image/*' />
       {selectedFiles.length > 0 && <Button onClick={uploadImages}>Upload Images</Button>}
@@ -92,7 +101,7 @@ const ImageUpload = () => {
       </div>
     </div>
 
-      {images && images.map(image => <img key={image} src={'data:image/jpeg;base64,' + image} />)}
+      
       {/* <UploadButton setFileList={setSelectedFiles} fileList={selectedFiles} /> */}
     </div>
 
