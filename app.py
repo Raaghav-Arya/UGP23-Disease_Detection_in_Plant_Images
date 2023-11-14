@@ -3,6 +3,7 @@ import os
 from flask_cors import CORS 
 import cv2
 import zipfile
+from backend_py.histogram import generate_histogram
 
 app = Flask(__name__)
 CORS(app)
