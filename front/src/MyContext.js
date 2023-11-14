@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 const MyContext = React.createContext();
 
 export const MyProvider = ({ children }) => {
-    const [result, setResult] = useState();
+    const [result, setResult] = useState({message:'',images:[]});
 
     return (
         <MyContext.Provider value={{ result, setResult }}>

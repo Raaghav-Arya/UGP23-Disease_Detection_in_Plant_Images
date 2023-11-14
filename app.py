@@ -2,8 +2,11 @@ from flask import Flask, request, jsonify, send_file
 import os
 from flask_cors import CORS 
 import cv2
-import zipfile
+# import zipfile
 from backend_py.histogram import generate_histogram
+import base64
+import json
+
 
 app = Flask(__name__)
 CORS(app)
@@ -37,22 +40,37 @@ def upload_images():
             image = cv2.imread(os.path.join('uploads', file))
             # Insert your function instead of cv2.cvtColor
             gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            disease = 'Disease'
             filename = os.path.join(app.config['UPLOAD_FOLDER'], file)
             cv2.imwrite(os.path.join('uploads', file), gray_image)
             img_ret.append
 
-    zipf = zipfile.ZipFile('greys.zip','w', zipfile.ZIP_DEFLATED)
+    # zipf = zipfile.ZipFile('greys.zip','w', zipfile.ZIP_DEFLATED)
+    # for file in os.listdir('uploads/'):
+    #     zipf.write('uploads/'+file)
+    # zipf.close()
+
+    # for file in os.listdir('uploads/'):
+    #     os.remove('uploads/'+file)
+
+    # return send_file('greys.zip', mimetype = 'zip', as_attachment = True)
+
+    images = []
     for file in os.listdir('uploads/'):
-        zipf.write('uploads/'+file)
-    zipf.close()
+        with open('uploads/'+file, 'rb') as f:
+            images.append(base64.b64encode(f.read()).decode('utf-8'))
+
+    # Create JSON response
+    response = {
+        'message': disease,
+        'images': images
+    }
 
     # Remove all files in uploads folder
     for file in os.listdir('uploads/'):
         os.remove('uploads/'+file)
 
-    return send_file('greys.zip',
-        mimetype = 'zip',
-        as_attachment = True)
+    return json.dumps(response), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -11,7 +11,7 @@ axios.defaults.baseURL = 'http://127.0.0.1:5000';
 const ImageUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const { result, setResult } = useMyContext();
-  const [images, setImages] = useState(null);
+  // const [images, setImages] = useState(null);
   
   const fileInputRef = useRef(null);
   const navigate = useNavigate()
@@ -30,18 +30,20 @@ const ImageUpload = () => {
 
     try {
       const response = await axios.post('/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        responseType: 'blob'
+        headers: { 'Content-Type': 'json' }
       });
 
-      const jszip = new JSZip();
-      const zip = await jszip.loadAsync(response.data)
-      const files = await Promise.all(Object.keys(zip.files).map(async filename =>
-        await zip.files[filename].async('base64')
-      ))
-      setImages(files)
+      // const jszip = new JSZip();
+      // const zip = await jszip.loadAsync(response.data)
+      // const files = await Promise.all(Object.keys(zip.files).map(async filename =>
+      //   await zip.files[filename].async('base64')
+      // ))
+      
+      // setImages(files)
+      setResult(response.data)
+      console.log(response.data)
       navigate('/result')
-      setResult(files)
+
     } catch (error) {
       console.error('Error uploading images:', error);
     }
