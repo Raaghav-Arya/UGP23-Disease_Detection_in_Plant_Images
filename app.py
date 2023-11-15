@@ -38,9 +38,11 @@ def upload_images():
 
         for file in os.listdir('uploads'):
             image = cv2.imread(os.path.join('uploads', file))
-            # Insert your function instead of cv2.cvtColor
+            ########################################
+            # Insert your function here
             gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            disease = 'Disease'
+            disease_name = 'Disease'
+            ########################################
             filename = os.path.join(app.config['UPLOAD_FOLDER'], file)
             cv2.imwrite(os.path.join('uploads', file), gray_image)
             img_ret.append
@@ -62,7 +64,7 @@ def upload_images():
 
     # Create JSON response
     response = {
-        'message': disease,
+        'message': disease_name,
         'images': images
     }
 
